@@ -1,5 +1,8 @@
 #!/bin/bash
 
+#echo "color_prompt=yes" | ./prepend-to-file ~/.bashrc
+
+
 #read_from_pipe() { read "$@" <&0; }
 read_from_pipe() {
    read ret
@@ -8,9 +11,12 @@ read_from_pipe() {
 
 #echo "blah" | prepend-to-file file.name tmpPathName
 file="$1"
-tmpFile="$2"
-data=$(read_from_pipe)
+#tmpFile="$2"
+tmpFile=`./get-tmp-dir prepend-to-file-tmp-`/tmp
+
+
+#data="$(read_from_pipe)"
 
 echo "prepending $data to $file (using tmpfile $tmpFile)"
-cat $data $file > $tmpFile && mv $tmpFile $file
+cat - $file > $tmpFile && mv $tmpFile $file
 
