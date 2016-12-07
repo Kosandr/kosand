@@ -12,6 +12,19 @@ class API(ExposedAPI):
       self.counter = 0
 
    @exposed
+   def set_prompt():
+      pass
+
+   @exposed
+   def new_app():
+      pass
+
+   @exposed
+   def new_site():
+      pass
+
+
+   @exposed
    def get_string(self):
       self.counter += 1
       return "I am a string! %s" % self.counter
