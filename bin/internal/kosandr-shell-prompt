@@ -2,6 +2,21 @@
 
 import os
 #dir_path = os.path.dirname(os.path.realpath(__file__))
-cwd = os.getcwd()
+cwd = os.path.basename(os.getcwd())
 
-print('ha' + cwd + 'ha')
+
+col_yellow = '\e[93m'
+col_norm = '\e[0m'
+
+##
+prompt = '%s%s$%s' % (col_yellow, cwd, col_norm)
+
+prompt = '`echo -e \"%s\ \"`' % (prompt, )
+
+#print(prompt)
+
+
+cmd = "bash -c 'bash --rcfile <(echo \". ~/.bashrc; export PS1=%s\") ' " % (prompt, )
+#cmd = 'bash -c "echo -e \"%s\""' % (prompt, )
+
+os.system(cmd)
