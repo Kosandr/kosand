@@ -17,28 +17,59 @@ def get_conf_from_path(path):
 
 #main file
 
+####TODO:
+'''
+obtain lock to make sure only 1 instance is running
+create lib library and correct infrastructure
+
+change prompt:
+http://stackoverflow.com/questions/7120426/invoke-bash-run-commands-inside-new-shell-then-give-control-back-to-user
+'''
+#os.system('''bash --rcfile <(echo '. ~/.bashrc; export PS1="test"') ''')
+#os.system("bash -c 'bash --rcfile <(echo \". ~/.bashrc; export PS1=test\") ' ")
+
+'''
+#bad bash -c "export PS1='hiii'; bash"
+#bad os.system(' bash -c "export PS1=\'hiii\'; bash"  ')
+
+''' ####end TODO
+
+def error(x):
+   raise x
+
 class Config:
    def __init__(self, install_path=None, config_path=None):
 
-      #guess
-      if install_path is None and config_path is None:
-         install_path, config_path = self.guess_config_location()
-
-      #we got config file, but idk where nstall_path is
-      elif config_path is not None and install_path is None:
-         pass
-
       #we have install_path (which has symlink to config_path)
-      elif install_path is not None:
-         sh_read_file(install_path + '/' + 'kosandr.conf')
+      if install_path is not None and config_path is None:
+         self.init_with_install_path(install_path)
+         #sh_read_file(install_path + '/' + 'kosandr.conf')
 
-   def init_with_pathes(self):
+      #we got config file, but idk where install_path is
+      elif config_path is not None:
+         self.init_with_config_path(config_path)
 
-   def guess_config_location(self):
+      #guess
+      elif install_path is None and config_path is None:
+         self.init_guess_config_location()
+
+      #same as "elif install_path != None && config_path != None:"
+      else:
+         err_msg = 'specify either install_path or config_path but not both'
+         error(err_msg)
+
+
+
+   def init_with_both_pathes(self):
+      pass
+
+   def init_with_config_path(self):
+      pass
+
+   def init_guess_config_location(self):
       self.install_path = DEFAULT_INSTALL_PATH
       self.config_path = DEFAULT_CONFIG_PATH
-      self.init_with_pathes()
-      return install_path, config_path
+      self.init_with_both_pathes()
 
    def self_install(self):
       mkdir('/tmp/ha')
