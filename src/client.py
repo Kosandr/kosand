@@ -32,9 +32,12 @@ class Config:
       elif install_path is not None:
          sh_read_file(install_path + '/' + 'kosandr.conf')
 
+   def init_with_pathes(self):
+
    def guess_config_location(self):
-      install_path = DEFAULT_INSTALL_PATH
-      config_path = DEFAULT_CONFIG_PATH
+      self.install_path = DEFAULT_INSTALL_PATH
+      self.config_path = DEFAULT_CONFIG_PATH
+      self.init_with_pathes()
       return install_path, config_path
 
    def self_install(self):
