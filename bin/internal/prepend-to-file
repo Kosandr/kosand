@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#read_from_pipe() { read "$@" <&0; }
+read_from_pipe() {
+   read ret
+   echo $ret
+}
+
+#echo "blah" | prepend-to-file file.name tmpPathName
+file="$1"
+tmpFile="$2"
+data=$(read_from_pipe)
+
+echo "prepending $data to $file (using tmpfile $tmpFile)"
+cat $data $file > $tmpFile && mv $tmpFile $file
+

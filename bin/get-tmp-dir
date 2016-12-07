@@ -1,0 +1,24 @@
+#!/usr/bin/python
+
+import tempfile, sys
+#for printing to error stream
+from __future__ import print_function
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+def tmp_folder(prefix='tmp', suffix=''):
+   return tempfile.mkdtemp(suffx, prefix)
+
+args = sys.argv
+
+if len(sys.argv) == 1:
+   print(tmp_folder())
+elif len(sys.argv) == 2:
+   print(tmp_folder(prefix=sys.argv[1]))
+elif len(sys.argv) == 3:
+   print(tmp_folder(prefix=sys.argv[1], suffix=sys.argv[2]))
+else:
+   eprint('%s: bad number of arguments', (sys.argv[0]))
+
+
