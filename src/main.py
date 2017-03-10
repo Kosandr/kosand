@@ -2,6 +2,8 @@
 
 from settings import gen_arg_parser
 from installer import self_install
+from project_manager import new_project
+
 
 def main():
    arg_parser = gen_arg_parser()
@@ -18,9 +20,15 @@ def main():
          print('setup needs -m devel/prod')
 
       self_install(mode)
+   elif action == 'init':
+      if args.project_name == None:
+         print('new project requires a name')
+         sys.exit(1)
 
+      new_project(args.project_name)
    print(args)
 
 
 
 print(main())
+

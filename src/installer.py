@@ -6,8 +6,8 @@ sh_get_path = shellutils.get_abs_path_relative_to
 
 def self_install(mode):
    warning_str = 'Warning: this will overwrite /sec. Proceed? (yes/no)'
-   proceed_str = raw_input(warning_str)
-   if proceed_str = 'yes':
+   proceed_str = input(warning_str)
+   if proceed_str == 'yes':
       print('installing...')
    else:
       print('exiting...')
@@ -19,8 +19,9 @@ def self_install(mode):
 
    os.system('sudo ln -s %s /usr/bin/kosand' % (kosand_path,))
 
-   #os.system('sudo cp %s/misc/install_dir/sec /' % (kosand_dir, ))
-   os.system('sudo rsync -a %s/misc/install_dir/sec /' % (kosand_dir, ))
+   install_dir = '%s/misc/install_dir/sec' % (kosand_dir,)
+   #os.system('sudo cp %s /' % (install_dir, ))
+   os.system('sudo rsync -a %s /' % (install_dir, ))
 
 
    is_prod = 0
