@@ -1,7 +1,6 @@
 import os, sys
 from utiltools import shellutils
 
-
 sh_get_path = shellutils.get_abs_path_relative_to
 
 def self_install(mode):
