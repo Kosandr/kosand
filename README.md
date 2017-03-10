@@ -1,7 +1,14 @@
 # kosand
 Tool for managing kosandr sites and apps.
 
-Usage
+Usage example
+```bash
+
+
+kosand install -m devel/prod = install kosand system-wide
+kosand init -p test = initialize project test
+
+Usage old
 ```bash
 
 kosand start [foreground/fg]

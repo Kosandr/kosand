@@ -8,7 +8,6 @@ def execWithVirtEnv(cmd):
    sourceVirtEnv = 'source `which virtualenvwrapper.sh`; '
    os.system('bash -c "%s %s"' % (sourceVirtEnv, cmd))
 
-
 def new_project(projectName):
    config_raw = settings.gen_new_conf(projectName)
 
@@ -32,7 +31,6 @@ def new_project(projectName):
    pipPackages = projectSettings['PipPackages'].split(',')
    for pipPkg in pipPackages:
       execWithVirtEnv('workon %s; pip install %s' % (projectName, pipPkg))
-
 
    #shellutils.expand_link('misc/examples_project')
    examplesDir = kosandDir + '/misc/example_project/'

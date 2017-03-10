@@ -4,8 +4,7 @@ import configparser, argparse
 default_conf_path = '.kosand.conf'
 
 import utiltools
-#from utiltools import shellutils
-find_file_recursive_parent = utiltools.shellutils.find_file_recursive_parent
+from utiltools import shellutils
 
 def gen_default_conf(projectName='None'):
    '''Generates default project settings'''
@@ -154,5 +153,10 @@ def gen_arg_parser():
    p.add_argument('action', nargs='?', choices=choices)
 
    return parser
+
+find_conf_path = utiltools.shellutils.find_file_recursive_parent
+
+def find_conf(conf_name):
+   return find_conf_path(conf_name)
 
 
