@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import sys
 from settings import gen_arg_parser
 from installer import self_install
 from project_manager import new_project
@@ -18,7 +19,7 @@ def main():
       mode = args.mode
       if args.mode not in ['devel', 'prod']:
          print('setup needs -m devel/prod')
-
+         sys.exit(1)
       self_install(mode)
    elif action == 'init':
       if args.project_name == None:
@@ -27,7 +28,6 @@ def main():
 
       new_project(args.project_name)
    print(args)
-
 
 
 print(main())

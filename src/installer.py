@@ -5,7 +5,7 @@ from utiltools import shellutils
 sh_get_path = shellutils.get_abs_path_relative_to
 
 def self_install(mode):
-   warning_str = 'Warning: this will overwrite /sec. Proceed? (yes/no)'
+   warning_str = 'Warning: this will overwrite /sec. Proceed? (yes/no) '
    proceed_str = input(warning_str)
    if proceed_str == 'yes':
       print('installing...')
@@ -34,11 +34,21 @@ def self_install(mode):
 
    os.system('sudo apt update && sudo apt upgrade')
 
+   #gunicorn = installed with pip
    #mariadb
-   needed_packages = ['gunicorn', 'nginx-extras']
-   for package_name in needed_packages:
-      os.system('sudo apt install ' + package_name)
+   needed_packages = [
+      'nginx-extras', 'python3', 'python3-pip'
+   ]
+   for pkg_name in needed_packages:
+      os.system('sudo apt install ' + pkg_name)
 
+   pip_packages = ['virtualenv', 'virtualenvwrapper']
+   for pkg_name in pip_packages:
+      os.system('pip install ' + pkg_name)
+
+   #if breaks, see this thread:
+   #http://stackoverflow.com/questions/19549824/terminal-issue-with-virtualenvwrapper-after-mavericks-upgrade
+   os.system('echo "source `which virtualenvwrapper.sh`" >>~/.bashrc')
 
 
 

@@ -26,7 +26,10 @@ def gen_default_conf(projectName='None'):
          'NumWorkers' : 'None',
          'SslPub' : 'None',
          'SslPriv' : 'None',
-         'AdminEmailNotifications' : 'None'
+         'AdminEmailNotifications' : 'None',
+         'PipPackages' : 'flask,flask-session,user_agents',
+         'NpmPackages' : 'None'
+         #TODO: local npm and pip packages
       },
       'DevSettings' : {},
       'ProductionSettings' : {}
@@ -41,8 +44,9 @@ def get_conf_section_field_list(sectionName):
    '''Returns field names in each config section'''
 
    psFields = [
-      'JsxDir', 'PyDir', 'SassDir', 'TemplatesDir', 'IP', 'StaticDir',
-      'Port', 'NumWorkers', 'ProjectName', 'SslPub', 'SslPriv'
+      'JsxDir', 'PyDir', 'SassDir', 'TemplatesDir', 'IP',
+      'StaticDir', 'Port', 'NumWorkers', 'ProjectName',
+      'SslPub', 'SslPriv', 'PipPackages', 'NpmPackages'
    ]
    devFields = []
    prodFields = []
@@ -76,7 +80,7 @@ def gen_new_conf(project_name, user_arg_conf={}, conf_path=default_conf_path):
 
       for field in fields:
          field_val = userDefaults.get(field, autoDefaults[field]) #autoDefaults.get(field, 'None'))
-         print('section:', section, ' field:', field, ' val:', field_val)
+         #print('section:', section, ' field:', field, ' val:', field_val)
          config.set(section, field, field_val)
 
    with open(conf_path, 'w') as conf_file:
@@ -114,12 +118,11 @@ def get_conf_data(conf):
    return ret
 
 
-
 def gen_arg_parser():
 
    init_help = '''main actions:
       install           (global) install the global kosand project
-      init <project-name>
+      init -p <project-name>
                         new project
       setup             (project) run after cloning to setup
       rm [-p <project-name>]
@@ -141,10 +144,11 @@ def gen_arg_parser():
 
    p_help_str = 'name of new project (use with init only)'
    g_help_str = 'run command in global mode (used with status)'
+   m_help_str = 'server mode (used with install): devel/prod'
 
    p.add_argument('-p', '--project-name', nargs='?', help=p_help_str)
    p.add_argument('-g', '--global', help=g_help_str)
-   p.add_argument('-m', '--mode', nargs='?', help='mode: devel/prod')
+   p.add_argument('-m', '--mode', nargs='?', help=m_help_str)
 
    choices = ['install', 'init', 'setup', 'rm', 'watch', 'start', 'stop', 'status']
    p.add_argument('action', nargs='?', choices=choices)
