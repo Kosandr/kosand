@@ -30,3 +30,15 @@ kosand deps
    pydagger
       VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3 /usr/local/bin/virtualenvwrapper.sh
 
+
+Style guide:
+```
+no tab characters. use 3 spaces for tabbing
+
+functions use underscore format: func_name()
+classes and variables use camelCase: someVar
+
+functions and variables begin with lower-case letter
+classes begin with capital letter
+
+```
