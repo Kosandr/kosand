@@ -14,6 +14,7 @@ def gen_default_conf(projectName='None'):
          'ProjectName' : projectName,
          'JsxDir' : 'src/jsx',
          'PyDir' : 'src/py',
+         'GuniPyApp' : 'serv:app',
          'SassDir' : 'src/sass',
          'TemplatesDir' : 'src/templates',
          'StaticDir' : 'static-nginx',
@@ -23,8 +24,10 @@ def gen_default_conf(projectName='None'):
          'IP' : 'localhost',
          'Port' : '4001',
          'NumWorkers' : 'None',
-         'SslPub' : 'None',
-         'SslPriv' : 'None',
+         'SslEnabled' : 'None',
+         'SslDir' : 'None',
+         'SslPub' : 'None', #fullchain.pem
+         'SslPriv' : 'None', #privkey.pem
          'AdminEmailNotifications' : 'None',
          'PipPackages' : 'flask,flask-session,user_agents',
          'NpmPackages' : 'None'
@@ -43,9 +46,10 @@ def get_conf_section_field_list(sectionName):
    '''Returns field names in each config section'''
 
    psFields = [
-      'JsxDir', 'PyDir', 'SassDir', 'TemplatesDir', 'IP',
-      'StaticDir', 'Port', 'NumWorkers', 'ProjectName',
-      'SslPub', 'SslPriv', 'PipPackages', 'NpmPackages'
+      'JsxDir', 'PyDir', 'GuniPyApp', 'SassDir', 'TemplatesDir',
+      'IP', 'StaticDir', 'Port', 'NumWorkers', 'ProjectName',
+      'ProjectDomain', 'NpmPackages', 'PipPackages',
+      'SslEnabled', 'SslDir', 'SslPub', 'SslPriv'
    ]
    devFields = []
    prodFields = []
@@ -149,7 +153,7 @@ def gen_arg_parser():
    p.add_argument('-g', '--global', help=g_help_str)
    p.add_argument('-m', '--mode', nargs='?', help=m_help_str)
 
-   choices = ['install', 'init', 'setup', 'rm', 'watch', 'start', 'stop', 'status']
+   choices = ['install', 'init', 'setup', 'rm', 'watch', 'start', 'stop', 'status', 'set', 'get']
    p.add_argument('action', nargs='?', choices=choices)
 
    return parser

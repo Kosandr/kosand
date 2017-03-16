@@ -4,7 +4,7 @@ import sys
 from settings import gen_arg_parser
 from installer import self_install
 from project_manager import new_project
-
+import runner
 
 def main():
    arg_parser = gen_arg_parser()
@@ -27,6 +27,9 @@ def main():
          sys.exit(1)
 
       new_project(args.project_name)
+   elif action == 'start':
+      runner.run_site(args.project_name)
+
    print(args)
 
 
