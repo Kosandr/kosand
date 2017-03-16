@@ -35,7 +35,10 @@ def generate_nginx_conf(conf):
 def new_project(projectName):
    config_raw = project_settings.gen_new_conf(projectName)
 
-   config = helper.get_conf_data(config_raw, project_settings.get_conf_section_list())
+   get_sects = project_settings.get_conf_section_list
+   get_sect_fields = project_settings.get_conf_section_field_list
+
+   config = helper.get_conf_data(config_raw, get_sects, get_sect_fields)
    #print(config)
 
    projectSettings = config['ProjectSettings']

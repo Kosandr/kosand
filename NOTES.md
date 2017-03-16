@@ -17,11 +17,14 @@
    - [ ] auto-generate different image sizes
 
 # PROBLEMS
-
 - [ ] not using os.path.join
 - [ ] complete crap without docker
    - [ ] nginx parser deletes comments
 - [ ] installer.py has all the /sec paths hardcoded
+
+# THOUGHTS
+
+- [ ] should kosand.conf be in /etc ?
 
 # TODO
 add needed packages in installer.py

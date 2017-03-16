@@ -3,7 +3,7 @@ from utiltools import shellutils
 
 sh_get_path = shellutils.get_abs_path_relative_to
 
-def install_kosand_packages():
+def install_kosand_packages(apt_packages, pip_packages):
    os.system('sudo apt update && sudo apt upgrade')
 
    #gunicorn = installed with pip
@@ -47,7 +47,6 @@ def backup_nginx_conf():
 
    full_backup_path = nginx_backups_path + str(curr_backup_ver)
    os.system('cp %s %s' % (NGINX_CONF_PATH, full_backup_path))
-
 
 def link_nginx_confs():
    import nginxparser
@@ -93,7 +92,6 @@ def link_nginx_confs():
    else:
       print('NEEDED NGINX CONF FIELD ALREADY FOUND!')
 
-
 def self_install(mode):
    warning_str = 'Warning: this will overwrite /sec. Proceed? (yes/no) '
    proceed_str = input(warning_str)
@@ -113,15 +111,30 @@ def self_install(mode):
    #os.system('sudo cp %s /' % (install_dir, ))
    os.system('sudo rsync -a %s /' % (install_dir, ))
 
-   is_prod = 0
-   if mode == 'devel':
+   def write_is_prod(mode):
       is_prod = 0
-   elif mode == 'prod':
-      is_prod = 1
+      if mode == 'devel':
+         is_prod = 0
+      elif mode == 'prod':
+         is_prod = 1
 
-   os.system('sudo echo %s >/sec/is_prod' % (is_prod))
+      os.system('sudo echo %s >/sec/is_prod' % (is_prod))
 
-   install_kosand_packages()
+   write_is_prod(mode)
+
+   def get_conf():
+      import global_settings, helper
+      config_raw = global_settings.gen_new_conf()
+      get_sects = global_settings.get_conf_section_list
+      get_sect_fields = global_settings.get_conf_section_field_list
+      config = helper.get_conf_data(config_raw, get_sects, get_sect_fields)
+
+   config = get_conf()
+   kosConf = config['KosandSettings']
+
+   aptPackages = kosConf['AptPackages'].split(',')
+   pipPackages = kosConf['PipPackages'].split(',')
+   install_kosand_packages(aptPackages, pipPackages)
 
    setup_nginx_parser()
    link_nginx_confs()

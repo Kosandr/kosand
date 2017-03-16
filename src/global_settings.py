@@ -1,3 +1,4 @@
+import helper
 
 import configparser, argparse
 
@@ -5,80 +6,46 @@ import utiltools
 from utiltools import shellutils
 
 def gen_default_conf(projectName='None'):
-   '''Generates default project settings'''
+   '''Generates default Kosand settings'''
 
    ret = {
       'KosandSettings' : {
          'DataDir' : '/sec',
          'PortRange' : '4000-5000',
-         'TakenPorts' : 'None'
-         'IP' : 'localhost',
-         'Port' : '4001',
+         'TakenPorts' : 'None',
+         'Projects' : 'None',
+         'ProjectPaths' : 'None',
+         'AptPackages' : 'nginx-extras,python3,python3-pip',
+         'PipPackages' : 'virtualenv,virtualenvwrapper,pyparsing',
+      },
+      'DefaultProjectSettings' : { #TODO: USE THIS IN PROJECT SETTINGS
          'NumWorkers' : 'None',
-         'SslEnabled' : 'None',
-         'SslDir' : 'None',
-         'SslPub' : 'None', #fullchain.pem
-         'SslPriv' : 'None', #privkey.pem
          'AdminEmailNotifications' : 'None',
          'PipPackages' : 'flask,flask-session,user_agents',
          'NpmPackages' : 'None'
-         #TODO: local npm and pip packages
-      },
-      'DefaultProjectSettings' : {}
+      }
    }
 
    return ret
 
 def get_conf_section_list():
-   return ['ProjectSettings', 'DevSettings', 'ProductionSettings']
+   return ['KosandSettings', 'DefaultProjectSettings']
 
 def get_conf_section_field_list(sectionName):
    '''Returns field names in each config section'''
 
-   psFields = [
-      'JsxDir', 'PyDir', 'GuniPyApp', 'SassDir', 'TemplatesDir',
-      'IP', 'StaticDir', 'Port', 'NumWorkers', 'ProjectName',
-      'ProjectDomain', 'NpmPackages', 'PipPackages',
-      'SslEnabled', 'SslDir', 'SslPub', 'SslPriv'
-   ]
-   devFields = []
-   prodFields = []
+   ksFields = ['DataDir', 'PortRange', 'TakenPorts', 'Projects', 'ProjectPaths', 'AptPackages', 'PipPackages']
+   dpsFields = ['NumWorkers', 'AdminEmailNotifications', 'PipPackages', 'NpmPackages']
 
-   if sectionName == 'ProjectSettings':
-      return psFields
-   elif sectionName == 'DevSettings':
-      return devFields
-   elif sectionName == 'ProductionSettings':
-      return prodFields
+   if sectionName == 'KosandSettings':
+      return ksFields
+   elif sectionName == 'DefaultProjectSettings':
+      return dpsFields
    return []
 
-def gen_new_conf(project_name, user_arg_conf={}, conf_path=default_conf_path):
-   '''Writes default configuration to conf_path If no user settings,
-      then uses settings from gen_default_conf()
+default_conf_path = '/sec/internal/kosand.conf'
+def gen_new_conf(conf_path=default_conf_path, user_arg_conf={}):
 
-      user_arg_conf = user-supplied default settings
-   '''
-
-   sections = get_conf_section_list()
-   default_conf = gen_default_conf(project_name)
-
-   config = configparser.ConfigParser()
-
-   for i, section in enumerate(sections):
-      config.add_section(section)
-      fields = get_conf_section_field_list(section)
-
-      userDefaults = user_arg_conf.get(section, {})
-      autoDefaults = default_conf[section]
-
-      for field in fields:
-         field_val = userDefaults.get(field, autoDefaults[field]) #autoDefaults.get(field, 'None'))
-         #print('section:', section, ' field:', field, ' val:', field_val)
-         config.set(section, field, field_val)
-
-   with open(conf_path, 'w') as conf_file:
-      config.write(conf_file)
-
-   return config
+   return helper.gen_new_conf(conf_path, gen_default_conf, get_conf_section_list, get_conf_section_field_list, user_arg_conf, None)
 
 

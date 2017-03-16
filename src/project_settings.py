@@ -1,11 +1,11 @@
 
 import configparser, argparse
-
-default_conf_path = '.kosand.conf'
+import helper
 
 import utiltools
 from utiltools import shellutils
 
+#projectName gets ignored
 def gen_default_conf(projectName='None'):
    '''Generates default project settings'''
 
@@ -62,33 +62,9 @@ def get_conf_section_field_list(sectionName):
       return prodFields
    return []
 
+
+default_conf_path = '.kosand.conf'
 def gen_new_conf(project_name, user_arg_conf={}, conf_path=default_conf_path):
-   '''Writes default configuration to conf_path If no user settings,
-      then uses settings from gen_default_conf()
-
-      user_arg_conf = user-supplied default settings
-   '''
-
-   sections = get_conf_section_list()
-   default_conf = gen_default_conf(project_name)
-
-   config = configparser.ConfigParser()
-
-   for i, section in enumerate(sections):
-      config.add_section(section)
-      fields = get_conf_section_field_list(section)
-
-      userDefaults = user_arg_conf.get(section, {})
-      autoDefaults = default_conf[section]
-
-      for field in fields:
-         field_val = userDefaults.get(field, autoDefaults[field]) #autoDefaults.get(field, 'None'))
-         #print('section:', section, ' field:', field, ' val:', field_val)
-         config.set(section, field, field_val)
-
-   with open(conf_path, 'w') as conf_file:
-      config.write(conf_file)
-
-   return config
+   return helper.gen_new_conf(conf_path, gen_default_conf, get_conf_section_list, get_conf_section_field_list, user_arg_conf, project_name)
 
 

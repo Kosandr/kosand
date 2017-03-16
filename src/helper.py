@@ -28,13 +28,13 @@ def parse_conf(conf_path):
    #print(conf.sections())
    return ret
 
-def get_conf_data(conf, conf_sections, conf_section_fields):
+def get_conf_data(conf, get_conf_section_list, get_conf_section_field_list):
    '''Given configpraser, returns data as dictionary'''
 
    #defaultConf = gen_default_conf()
    ret = {}
 
-   for section in conf_sections:
+   for section in get_conf_section_list():
       #sectDefaults = defaultConf[section]
       sectFields = get_conf_section_field_list(section)
       ret[section] = {}
@@ -83,6 +83,40 @@ def gen_arg_parser():
    p.add_argument('action', nargs='?', choices=choices)
 
    return parser
+
+
+def gen_new_conf(conf_path, gen_default_conf,
+                 get_conf_section_list, get_conf_section_field_list,
+                 user_arg_conf={}, project_name=None):
+   '''Writes default configuration to conf_path.
+      If no default user settings, then uses
+      settings from gen_default_conf()
+
+      user_arg_conf = user-supplied default settings
+   '''
+
+   sections = get_conf_section_list()
+   default_conf = gen_default_conf(project_name)
+
+   config = configparser.ConfigParser()
+
+   for i, section in enumerate(sections):
+      config.add_section(section)
+      fields = get_conf_section_field_list(section)
+
+      userDefaults = user_arg_conf.get(section, {})
+      autoDefaults = default_conf[section]
+
+      for field in fields:
+         field_val = userDefaults.get(field, autoDefaults[field]) #autoDefaults.get(field, 'None'))
+         #print('section:', section, ' field:', field, ' val:', field_val)
+         config.set(section, field, field_val)
+
+   with open(conf_path, 'w') as conf_file:
+      config.write(conf_file)
+
+   return config
+
 
 find_conf_path = utiltools.shellutils.find_file_recursive_parent
 
