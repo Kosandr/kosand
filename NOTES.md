@@ -24,7 +24,7 @@ nginx.conf for each site
 add site to global kosand list (stored in sec)
 
 
-***======commands
+# commands
 kosand install = (global) install/set-up kosand
 
 kosand init -p <project-name> = initialize new project
@@ -41,30 +41,30 @@ kosand stop <project-name> = stop the project
 
 kosand status [-p <project-name>] = print global status or for specific project
 
-======commands TODO
+## commands TODO
 
-==get/set/update
+### get/set/update
 
 kosand get [--global] [conf-var-name] = by default, lists possible getting variables
 
 kosand set [--global] [conf-var-name] [conf-var-val] = by default, sets possible variables
 
-==update
+### update
 kosand update PipPackages
 kosand update NpmPackages
 
-==workon
+### workon
 
 kosand workon <project-name>
 
-==assets
+### ssets
 kosand [-p <project-name>] --upload-assets = upload assets
 
 OR
 
 kosand assets [upload/download/snapshot]
 
-======old
+# old
 
 kosand setup = setup project name
 kosand update = ????
@@ -73,10 +73,9 @@ kosand status = current status
 kosand assets --download = (download should be part of setup)
 
 
-***======usage examples
+# usage examples
 
-
-***======notes:
+# notes:
 - instead of files, can use SQLite to keep track of all the data
 - security
    - container/docker?
@@ -87,7 +86,8 @@ kosand assets --download = (download should be part of setup)
 kosand status --global
    running/stopped/dead
 
-***======dir layout:
+# dir layout:
+```
    /sec/admin_scripts = admin scripts
       TODO: maybe remove
    /sec/backups = has backup data
@@ -104,5 +104,5 @@ kosand status --global
       /sec/internal/sites-backend = backend code for each site
    /sec/projects = original source code for each project
    /sec/www-data = nginx data
-
+```
 
