@@ -1,8 +1,6 @@
 
 import configparser, argparse
 
-default_conf_path = '.kosand.conf'
-
 import utiltools
 from utiltools import shellutils
 
@@ -10,17 +8,10 @@ def gen_default_conf(projectName='None'):
    '''Generates default project settings'''
 
    ret = {
-      'ProjectSettings' : {
-         'ProjectName' : projectName,
-         'JsxDir' : 'src/jsx',
-         'PyDir' : 'src/py',
-         'GuniPyApp' : 'serv:app',
-         'SassDir' : 'src/sass',
-         'TemplatesDir' : 'src/templates',
-         'StaticDir' : 'static-nginx',
-         'StaticUrl' : 'None',
-         'ProjectDomain' : 'None',
-         'ProjectUrl' : 'None',
+      'KosandSettings' : {
+         'DataDir' : '/sec',
+         'PortRange' : '4000-5000',
+         'TakenPorts' : 'None'
          'IP' : 'localhost',
          'Port' : '4001',
          'NumWorkers' : 'None',
@@ -33,8 +24,7 @@ def gen_default_conf(projectName='None'):
          'NpmPackages' : 'None'
          #TODO: local npm and pip packages
       },
-      'DevSettings' : {},
-      'ProductionSettings' : {}
+      'DefaultProjectSettings' : {}
    }
 
    return ret

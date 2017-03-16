@@ -1,8 +1,6 @@
 
 import configparser, argparse
 
-default_conf_path = '.kosand.conf'
-
 import utiltools
 from utiltools import shellutils
 
@@ -10,17 +8,10 @@ def gen_default_conf(projectName='None'):
    '''Generates default project settings'''
 
    ret = {
-      'ProjectSettings' : {
-         'ProjectName' : projectName,
-         'JsxDir' : 'src/jsx',
-         'PyDir' : 'src/py',
-         'GuniPyApp' : 'serv:app',
-         'SassDir' : 'src/sass',
-         'TemplatesDir' : 'src/templates',
-         'StaticDir' : 'static-nginx',
-         'StaticUrl' : 'None',
-         'ProjectDomain' : 'None',
-         'ProjectUrl' : 'None',
+      'KosandSettings' : {
+         'DataDir' : '/sec',
+         'PortRange' : '4000-5000',
+         'TakenPorts' : 'None'
          'IP' : 'localhost',
          'Port' : '4001',
          'NumWorkers' : 'None',
@@ -33,8 +24,7 @@ def gen_default_conf(projectName='None'):
          'NpmPackages' : 'None'
          #TODO: local npm and pip packages
       },
-      'DevSettings' : {},
-      'ProductionSettings' : {}
+      'DefaultProjectSettings' : {}
    }
 
    return ret
@@ -119,6 +109,44 @@ def get_conf_data(conf):
          ret[section][fieldName] = fieldVal
 
    return ret
+
+
+def gen_arg_parser():
+
+   init_help = '''main actions:
+      install           (global) install the global kosand project
+      init -p <project-name>
+                        new project
+      setup             (project) run after cloning to setup
+      rm [-p <project-name>]
+                        remove current project from the list
+      watch [-p <project-name>]
+                        watch project live
+      start [-p <project-name>]
+                        start running project
+      stop [-p <project-name>]
+                        stop running project
+      status [-p <project-name>]
+                        (local) print current status
+      status --global   (global) status of all projects
+   '''
+
+   p = parser = argparse.ArgumentParser(
+         'kosand', epilog=init_help,
+         formatter_class=argparse.RawTextHelpFormatter)
+
+   p_help_str = 'name of new project (use with init only)'
+   g_help_str = 'run command in global mode (used with status)'
+   m_help_str = 'server mode (used with install): devel/prod'
+
+   p.add_argument('-p', '--project-name', nargs='?', help=p_help_str)
+   p.add_argument('-g', '--global', help=g_help_str)
+   p.add_argument('-m', '--mode', nargs='?', help=m_help_str)
+
+   choices = ['install', 'init', 'setup', 'rm', 'watch', 'start', 'stop', 'status', 'set', 'get']
+   p.add_argument('action', nargs='?', choices=choices)
+
+   return parser
 
 find_conf_path = utiltools.shellutils.find_file_recursive_parent
 
