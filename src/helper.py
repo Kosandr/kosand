@@ -1,85 +1,22 @@
 
+#GLOBALS
+NGINX_CONF_PATH = '/etc/nginx/'
+NGINX_CONF_PATH = '%s/nginx.conf' % (NGINX_CONF_PATH,)
+KOSANDR_ORG_URL_HTTPS = 'https://github.com/Kosandr' #CAREFUL WITH SLASHES
+KOSANDR_ORG_URL_SSH = 'git@github.com:Kosandr' #CAREFUL WITH SLASHES
+
+KOSAND_DATA_DIR = '/sec/'
+KOSAND_BACKUP_DIR = '%sbackups/' % (KOSAND_DATA_DIR, )
+
+KOSAND_NGINX_INCLUDE_PATH = '%sinternal/nginx-confs/' % (KOSAND_DATA_DIR, )
+#AS SEEN IN nginx.conf
+KOSAND_INCLUDE_PATH_FOR_NGINX_CONF = KOSAND_NGINX_INCLUDE_PATH + '*'
+
+
 import configparser, argparse
 
 import utiltools
 from utiltools import shellutils
-
-def gen_default_conf(projectName='None'):
-   '''Generates default project settings'''
-
-   ret = {
-      'KosandSettings' : {
-         'DataDir' : '/sec',
-         'PortRange' : '4000-5000',
-         'TakenPorts' : 'None'
-         'IP' : 'localhost',
-         'Port' : '4001',
-         'NumWorkers' : 'None',
-         'SslEnabled' : 'None',
-         'SslDir' : 'None',
-         'SslPub' : 'None', #fullchain.pem
-         'SslPriv' : 'None', #privkey.pem
-         'AdminEmailNotifications' : 'None',
-         'PipPackages' : 'flask,flask-session,user_agents',
-         'NpmPackages' : 'None'
-         #TODO: local npm and pip packages
-      },
-      'DefaultProjectSettings' : {}
-   }
-
-   return ret
-
-def get_conf_section_list():
-   return ['ProjectSettings', 'DevSettings', 'ProductionSettings']
-
-def get_conf_section_field_list(sectionName):
-   '''Returns field names in each config section'''
-
-   psFields = [
-      'JsxDir', 'PyDir', 'GuniPyApp', 'SassDir', 'TemplatesDir',
-      'IP', 'StaticDir', 'Port', 'NumWorkers', 'ProjectName',
-      'ProjectDomain', 'NpmPackages', 'PipPackages',
-      'SslEnabled', 'SslDir', 'SslPub', 'SslPriv'
-   ]
-   devFields = []
-   prodFields = []
-
-   if sectionName == 'ProjectSettings':
-      return psFields
-   elif sectionName == 'DevSettings':
-      return devFields
-   elif sectionName == 'ProductionSettings':
-      return prodFields
-   return []
-
-def gen_new_conf(project_name, user_arg_conf={}, conf_path=default_conf_path):
-   '''Writes default configuration to conf_path If no user settings,
-      then uses settings from gen_default_conf()
-
-      user_arg_conf = user-supplied default settings
-   '''
-
-   sections = get_conf_section_list()
-   default_conf = gen_default_conf(project_name)
-
-   config = configparser.ConfigParser()
-
-   for i, section in enumerate(sections):
-      config.add_section(section)
-      fields = get_conf_section_field_list(section)
-
-      userDefaults = user_arg_conf.get(section, {})
-      autoDefaults = default_conf[section]
-
-      for field in fields:
-         field_val = userDefaults.get(field, autoDefaults[field]) #autoDefaults.get(field, 'None'))
-         #print('section:', section, ' field:', field, ' val:', field_val)
-         config.set(section, field, field_val)
-
-   with open(conf_path, 'w') as conf_file:
-      config.write(conf_file)
-
-   return config
 
 def parse_conf(conf_path):
    '''Takes configuration path, and returns dictionary of settings'''
@@ -91,13 +28,13 @@ def parse_conf(conf_path):
    #print(conf.sections())
    return ret
 
-def get_conf_data(conf):
+def get_conf_data(conf, conf_sections, conf_section_fields):
    '''Given configpraser, returns data as dictionary'''
 
    #defaultConf = gen_default_conf()
    ret = {}
 
-   for section in get_conf_section_list():
+   for section in conf_sections:
       #sectDefaults = defaultConf[section]
       sectFields = get_conf_section_field_list(section)
       ret[section] = {}
@@ -109,7 +46,6 @@ def get_conf_data(conf):
          ret[section][fieldName] = fieldVal
 
    return ret
-
 
 def gen_arg_parser():
 

@@ -1,3 +1,8 @@
+# COMPROMISES
+
+- [ ] no docker
+- [ ] store assets in same repo?
+
 # ROADPATH
 
 - [ ] implement kosand.conf generator and internal state trackers

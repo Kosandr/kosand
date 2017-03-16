@@ -1,5 +1,5 @@
 import os
-import settings
+import helper
 
 def watch_site(project_name=None):
    pass
@@ -20,7 +20,7 @@ def stop_site(project_name=None):
    pass
 
 def get_conf():
-   conf_path = settings.find_conf('.kosand.conf')
+   conf_path = helper.find_conf('.kosand.conf')
    if conf_path is None:
       print("couldn't find .kosand.conf")
       sys.exit(1)

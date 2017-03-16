@@ -26,17 +26,7 @@ def install_kosand_packages():
 
 from os.path import join
 
-NGINX_CONF_PATH = '/etc/nginx/'
-NGINX_CONF_PATH = '%s/nginx.conf' % (NGINX_CONF_PATH,)
-KOSANDR_ORG_URL_HTTPS = 'https://github.com/Kosandr' #CAREFUL WITH SLASHES
-KOSANDR_ORG_URL_SSH = 'git@github.com:Kosandr' #CAREFUL WITH SLASHES
-
-KOSAND_DATA_DIR = '/sec/'
-KOSAND_BACKUP_DIR = '%sbackups/' % (KOSAND_DATA_DIR, )
-
-KOSAND_NGINX_INCLUDE_PATH = '%sinternal/nginx-confs/' % (KOSAND_DATA_DIR, )
-#AS SEEN IN nginx.conf
-KOSAND_INCLUDE_PATH_FOR_NGINX_CONF = KOSAND_NGINX_INCLUDE_PATH + '*'
+from helper import (NGINX_CONF_PATH, KOSANDR_ORG_URL_HTTPS, KOSANDR_ORG_URL_SSH, KOSAND_DATA_DIR, KOSAND_BACKUP_DIR, KOSAND_NGINX_INCLUDE_PATH, KOSAND_INCLUDE_PATH_FOR_NGINX_CONF)
 
 #TODO: make pip install a separate function, and install pyparsing here??
 def setup_nginx_parser():

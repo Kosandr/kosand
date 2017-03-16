@@ -91,38 +91,4 @@ def gen_new_conf(project_name, user_arg_conf={}, conf_path=default_conf_path):
 
    return config
 
-def parse_conf(conf_path):
-   '''Takes configuration path, and returns dictionary of settings'''
-
-   settings = configparser.ConfigParser()
-   settings.read(conf_path)
-   ret = get_conf_data(settings)
-   #print(ret)
-   #print(conf.sections())
-   return ret
-
-def get_conf_data(conf):
-   '''Given configpraser, returns data as dictionary'''
-
-   #defaultConf = gen_default_conf()
-   ret = {}
-
-   for section in get_conf_section_list():
-      #sectDefaults = defaultConf[section]
-      sectFields = get_conf_section_field_list(section)
-      ret[section] = {}
-
-      for fieldName in sectFields:
-         fieldVal = conf.get(section, fieldName)
-         if fieldVal == 'None':
-            fieldVal = None
-         ret[section][fieldName] = fieldVal
-
-   return ret
-
-find_conf_path = utiltools.shellutils.find_file_recursive_parent
-
-def find_conf(conf_name):
-   return find_conf_path(conf_name)
-
 

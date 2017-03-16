@@ -1,4 +1,4 @@
-import settings, os
+import os, project_settings, helper
 from utiltools import shellutils
 
 sh_get_path = shellutils.get_abs_path_relative_to
@@ -33,9 +33,9 @@ def generate_nginx_conf(conf):
    pass
 
 def new_project(projectName):
-   config_raw = settings.gen_new_conf(projectName)
+   config_raw = project_settings.gen_new_conf(projectName)
 
-   config = settings.get_conf_data(config_raw)
+   config = helper.get_conf_data(config_raw, project_settings.get_conf_section_list())
    #print(config)
 
    projectSettings = config['ProjectSettings']

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from settings import gen_arg_parser
+from helper import gen_arg_parser
 from installer import self_install
 from project_manager import new_project
 import runner
