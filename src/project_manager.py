@@ -33,6 +33,10 @@ def generate_nginx_conf(conf):
    pass
 
 def new_project(projectName):
+
+   kConf = helper.get_kosand_conf()
+   print(kConf)
+
    config_raw = project_settings.gen_new_conf(projectName)
 
    get_sects = project_settings.get_conf_section_list

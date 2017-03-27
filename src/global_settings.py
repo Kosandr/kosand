@@ -15,7 +15,7 @@ def gen_default_conf(projectName='None'):
          'TakenPorts' : 'None',
          'Projects' : 'None',
          'ProjectPaths' : 'None',
-         'AptPackages' : 'nginx-extras,python3,python3-pip',
+         'AptPackages' : 'nginx-extras,python3,python3-pip', #gunicorn = install through pip, mariadb
          'PipPackages' : 'virtualenv,virtualenvwrapper,pyparsing',
       },
       'DefaultProjectSettings' : { #TODO: USE THIS IN PROJECT SETTINGS
@@ -34,8 +34,14 @@ def get_conf_section_list():
 def get_conf_section_field_list(sectionName):
    '''Returns field names in each config section'''
 
-   ksFields = ['DataDir', 'PortRange', 'TakenPorts', 'Projects', 'ProjectPaths', 'AptPackages', 'PipPackages']
-   dpsFields = ['NumWorkers', 'AdminEmailNotifications', 'PipPackages', 'NpmPackages']
+   ksFields = [
+      'DataDir', 'PortRange', 'TakenPorts', 'Projects',
+      'ProjectPaths', 'AptPackages', 'PipPackages'
+   ]
+   dpsFields = [
+      'NumWorkers', 'AdminEmailNotifications',
+      'PipPackages', 'NpmPackages'
+   ]
 
    if sectionName == 'KosandSettings':
       return ksFields

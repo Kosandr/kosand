@@ -18,12 +18,12 @@ import configparser, argparse
 import utiltools
 from utiltools import shellutils
 
-def parse_conf(conf_path):
+def parse_conf(conf_path, get_conf_section_list, get_conf_section_fields):
    '''Takes configuration path, and returns dictionary of settings'''
 
    settings = configparser.ConfigParser()
    settings.read(conf_path)
-   ret = get_conf_data(settings)
+   ret = get_conf_data(settings, get_conf_section_list, get_conf_section_fields)
    #print(ret)
    #print(conf.sections())
    return ret
@@ -122,5 +122,13 @@ find_conf_path = utiltools.shellutils.find_file_recursive_parent
 
 def find_conf(conf_name):
    return find_conf_path(conf_name)
+
+def get_kosand_conf():
+   from global_settings import default_conf_path, get_conf_section_list, get_conf_section_field_list
+   return parse_conf(default_conf_path, get_conf_section_list, get_conf_section_field_list)
+
+def update_kosand_conf(kConf):
+   pass
+
 
 

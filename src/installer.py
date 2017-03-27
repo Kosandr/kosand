@@ -3,26 +3,22 @@ from utiltools import shellutils
 
 sh_get_path = shellutils.get_abs_path_relative_to
 
-def install_kosand_packages(apt_packages, pip_packages):
+def install_kosand_packages(config):
+   kosConf = config['KosandSettings']
+   aptPackages = kosConf['AptPackages'].split(',')
+   pipPackages = kosConf['PipPackages'].split(',')
+
    os.system('sudo apt update && sudo apt upgrade')
 
-   #gunicorn = installed with pip
-   #mariadb
-   needed_packages = [
-      'nginx-extras', 'python3', 'python3-pip'
-   ]
-   for pkg_name in needed_packages:
+   for pkg_name in aptPackages:
       os.system('sudo apt install ' + pkg_name)
 
-   pip_packages = ['virtualenv', 'virtualenvwrapper', 'pyparsing']
-   for pkg_name in pip_packages:
+   for pkg_name in pipPackages:
       os.system('pip install ' + pkg_name)
 
    #if breaks, see this thread:
    #http://stackoverflow.com/questions/19549824/terminal-issue-with-virtualenvwrapper-after-mavericks-upgrade
    os.system('echo "source `which virtualenvwrapper.sh`" >>~/.bashrc')
-
-   pass
 
 from os.path import join
 
@@ -128,13 +124,10 @@ def self_install(mode):
       get_sects = global_settings.get_conf_section_list
       get_sect_fields = global_settings.get_conf_section_field_list
       config = helper.get_conf_data(config_raw, get_sects, get_sect_fields)
+      return config
 
    config = get_conf()
-   kosConf = config['KosandSettings']
-
-   aptPackages = kosConf['AptPackages'].split(',')
-   pipPackages = kosConf['PipPackages'].split(',')
-   install_kosand_packages(aptPackages, pipPackages)
+   install_kosand_packages(config)
 
    setup_nginx_parser()
    link_nginx_confs()
