@@ -23,6 +23,7 @@ def main():
       self_install(mode)
    elif action == 'init':
       if args.project_name == None:
+         arg_parser.print_help()
          print('new project requires a name')
          sys.exit(1)
 

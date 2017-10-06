@@ -9,8 +9,25 @@ def execWithVirtEnv(cmd):
    os.system('bash -c "%s %s"' % (sourceVirtEnv, cmd))
 
 
+def get_local_ip():
+   import socket
+
+   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+   s.connect(("google.com",80))
+   ret_ip = s.getsockname()[0]
+   s.close()
+   return ret_ip
+
+
 def generate_nginx_conf(conf):
    ps = conf['ProjectSettings']
+
+   domain = ps['ProjectDomain']
+   if domain is None:
+      domain = get_local_ip()
+
+   from utiltools import shellutils
+   local_path = shellutils.cwd()
 
    ssl_str = ''
    if ps['SslEnabled'] == True:
@@ -23,25 +40,34 @@ def generate_nginx_conf(conf):
          ssl_certificate_key %s;
       ''' % (ssl_pub, ssl_priv)
 
+   static_location = '''
+      location /%s {
+         alias %s/%s;
+      }
+
+   ''' % (ps['StaticUrl'], local_path, ps['StaticDir'])
+
    placeholder_str = '''server {
       server_name %s www.%s;
 
       %s
 
+      %s
 
-   }''' % (ps['ProjectDomain'], ps['ProjectDomain'], ssl_str)
+   }''' % (domain, ps['ProjectDomain'], ssl_str, static_location)
+
+   print(placeholder_str)
    pass
 
 def new_project(projectName):
 
    kConf = helper.get_kosand_conf()
-   print(kConf)
+   #print(kConf)
 
    config_raw = project_settings.gen_new_conf(projectName)
 
    get_sects = project_settings.get_conf_section_list
    get_sect_fields = project_settings.get_conf_section_field_list
-
    config = helper.get_conf_data(config_raw, get_sects, get_sect_fields)
    #print(config)
 
