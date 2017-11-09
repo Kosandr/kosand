@@ -72,4 +72,6 @@ def new_project(projectName):
 
    generate_nginx_conf(config)
 
+   pass
+
 

@@ -28,8 +28,10 @@ def gen_default_conf(projectName='None'):
 
    return ret
 
+
 def get_conf_section_list():
    return ['KosandSettings', 'DefaultProjectSettings']
+
 
 def get_conf_section_field_list(sectionName):
    '''Returns field names in each config section'''

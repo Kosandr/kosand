@@ -6,6 +6,10 @@ from installer import self_install
 from project_manager import new_project
 import runner
 
+#from utiltools import shellutils as shu
+#conf = shu.read_json('conf.json')
+#conf_pretty = json.dumps(conf, ident=4)
+
 def main():
    arg_parser = gen_arg_parser()
    args = arg_parser.parse_args()

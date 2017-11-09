@@ -132,4 +132,8 @@ def self_install(mode):
    setup_nginx_parser()
    link_nginx_confs()
 
+   pass
+
+
+
 
