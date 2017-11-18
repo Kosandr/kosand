@@ -820,3 +820,4 @@ class IPCEvent(object):
     def _on_wait_error(self, error):
         self._wait_error = error
         self._wait_success = False
+
