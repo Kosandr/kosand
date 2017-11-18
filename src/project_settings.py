@@ -6,8 +6,13 @@ import utiltools
 from utiltools import shellutils
 
 #projectName gets ignored
-def gen_default_conf(projectName='None'):
+def gen_default_conf(projectName='None', domain=None, url=None):
    '''Generates default project settings'''
+
+   if domain is None:
+      domain = 'None'
+   if url is None:
+      url = 'None'
 
    ret = {
       'ProjectSettings' : {
@@ -19,8 +24,8 @@ def gen_default_conf(projectName='None'):
          'TemplatesDir' : 'src/templates',
          'StaticDir' : 'static-nginx',
          'StaticUrl' : 'None',
-         'ProjectDomain' : 'None',
-         'ProjectUrl' : 'None',
+         'ProjectDomain' : domain,
+         'ProjectUrl' : url, #path after domain
          'IP' : 'localhost',
          'Port' : '4001',
          'NumWorkers' : 'None',
