@@ -1,0 +1,54 @@
+{
+         "app_name" : "required",
+         "app_version" : "required",
+
+
+         //if returns true, does not perform limit check
+         "limits" : {
+            "default" : "optional",
+            "filter" : "<filter_func>"
+         }
+
+         //default is None
+         "conf_modifier" : "<get_final_conf/conf_modifier_func>",
+
+         "static_urls" : [ //optional
+            { "name" : "url_var_name2", //stored in dict of get_conf()
+              "url" : "route_url", //url in flask
+              "path" : "path", //actual path on disk relative to the app group root
+              "is_exposed" : "Bool" //can other apps use it?
+            },
+            {
+               "name" : "url_var_name2",
+               //...
+            }
+            //"base_url" : "actual_path",
+            //"base_url2" : "actual_path"
+         ],
+
+         "dynamic_urls" : [ //same as add_path
+            { //either use url or urls, not both
+              "url" : "base_url",
+              "urls" : ["list_urls"],
+              "view_func" : view_function,
+              "prior" : <priority>,
+              "limit" : <limit>,
+              "conf_modifier" : get_final_conf,
+              "accepts" : ["head", "get", "post"]
+            },
+            { ... }
+         ],
+
+         "templates" : [
+            { "name" : "<temp_name>",
+
+              //if true, only need filename for path, otherwise app group path
+              "is_relative" : Bool,
+              "is_exposed" : Bool, //can other apps use it?
+              "path" : "<filename/app group path>"
+            },
+             { ... }
+         ]
+
+      }
+
