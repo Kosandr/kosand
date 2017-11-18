@@ -1,12 +1,12 @@
 #!/usr/bin/python3
 
+from utiltools import shellutils as shu
 import os, sh
 
-def run_bash(cmd, get_out=True):
-   if get_out: #return
-      return os.popen(cmd).read()
-   else:
-      return os.system(cmd) #prints return to screen
+
+run_bash = shu.run_bash
+
+
 
 def install_docker():
    def add_docker_repo():
@@ -37,7 +37,6 @@ def install_docker():
    install()
 
    pass
-
 
 def is_docker_installed():
    try:

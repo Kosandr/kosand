@@ -19,6 +19,7 @@ Tool for managing kosandr sites and apps.
             - ro
                - ro/apps/<app-name>/{creds,nginx.conf}
                - ro/site/{creds,nginx.conf}
+         - /sec/kosand/conf.json
       - docker mounts
          - /sec/data/{ro,rw}/{site,apps/<app-name>}
             - rw
