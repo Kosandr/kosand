@@ -11,53 +11,6 @@ class AppManager(object):
       pass
 
    def add_app_conf(self, app_conf):
-      '''
-      app_conf = {
-         'app_name' : 'required',
-         'default_limits' : 'optional',
-         'limits_filter' : <filter_func>, #if returns true, does not perform limit check
-
-         'accepts' : ['head', 'get', 'post'],
-
-         'conf_modifier' : <get_final_conf/conf_modifier_func>, #default is None
-
-         'static_urls' : [ #optional
-            { 'name' : 'url_var_name2'
-              'url' : 'route_url', #url in flask
-              'path' : 'path', #actual path on disk relative to the app group root
-              'is_exposed' : Bool #can other apps use it?
-            },
-            {
-               'name' : 'url_var_name2',
-               ...
-            }
-            #'base_url' : 'actual_path',
-            #'base_url2' : 'actual_path'
-         ],
-
-         'dynamic_urls' : [ #same as add_path
-            { 'url' : 'base_url', #either use url or urls, not both
-              'urls' : ['list_urls'],
-              'view_func' : view_function,
-              'prior' : <priority>,
-              'limit' : <limit>,
-              'conf_modifier' : get_final_conf
-            },
-            { ... }
-         ],
-
-         'templates' : [
-            { 'name' : '<temp_name>',
-              'is_relative' : Bool, #if true, only need filename for path, otherwise app group path
-              'is_exposed' : Bool, #can other apps use it?
-              'path' : '<filename/app group path>',
-            },
-             { ... }
-         ]
-
-      }
-      '''
-
       self.app_name = app_conf['app_name']
 
       pass
