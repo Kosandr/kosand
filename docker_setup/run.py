@@ -19,6 +19,6 @@ run_cmd = '/bin/bash'
 
 print('running app with shared drive:', shared_drive_path)
 
-setup.run(img_build_id, shared_drive_path, run_cmd)
+setup.run1(img_build_id, shared_drive_path, run_cmd)
 
 

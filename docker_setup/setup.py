@@ -59,41 +59,51 @@ def check_and_install_docker():
    child = pexpect.spawn()'''
 
 
+DOCK_IMG_ID_STR = 'kosan_bfske_latest_docker_img_build_id'
+
 def write_img_buildid(name):
-   sh.shellu('set', 'kosan_bfske_latest_docker_img_build_id', name)
+   sh.shellu('set', DOCK_IMG_ID_STR, name)
    #pass
 
 def get_img_buildid():
-   return str(sh.shellu('get', 'kosan_bfske_latest_docker_img_build_id')).strip()
+   return str(sh.shellu('get', DOCK_IMG_ID_STR)).strip()
 
+def build_docker_image(dockerfile_path, dockerfile_dir, flush_cache=False, hide_out=True):
+   '''
+      flush_cache = does we need re-build from scratch?
+      hide_out = set to false to look at output as it builds
+   '''
 
-def main():
-   check_and_install_docker()
+   build_flags = '--no-cache' if not flush_cache else ''
 
-   build_flags = '--no-cache'
-   build_flags = '' #comment this line to re-build from scratch
+   cmd = 'docker build %s -f %s %s' % (build_flags, dockerfile_path, dockerfile_dir)
 
-   cmd = 'docker build %s -f dock/Dockerfile dock' % (build_flags,)
-
-   hide_out = True #set to false to look at output as it goes
    ret = run_bash(cmd, hide_out)
-
    print(ret)
 
    splitted = ret.split('Successfully built ')
 
    if len(splitted) is not 2:
       print('failed building image:', ret)
-   else:
-      build_id = splitted[1]
-      #build_id = 'a6072e47be06'
-      write_img_buildid(build_id)
-      print('running image: %s' % (build_id,))
+      return None
 
+   build_id = splitted[1]
+   #build_id = 'a6072e47be06'
+   write_img_buildid(build_id)
+
+   return build_id
+
+def main():
+   check_and_install_docker()
+
+   build_status = build_docker_image('dock/Dockerfile', 'dock')
+
+   if build_status is not None:
+      print('running image: %s' % (build_id,))
       run_bash('docker run -t -i %s /bin/bash' % (build_id,), False)
 
-
-def run(build_id, shared_drive_path, cmd):
+#runs image
+def run1(build_id, shared_drive_path, cmd):
    volume_args = '-v %s:/sec' % (shared_drive_path,)
 
    ports_args = '-p 4247:4247'
@@ -102,6 +112,28 @@ def run(build_id, shared_drive_path, cmd):
    run_bash(full_cmd, False)
 
    #pass
+
+def run2(build_id, cmd, shared_drives=None):
+   '''shared_drives = [
+         (real_path, docker_path),
+         ...
+      ]
+   '''
+
+   if shared_drives is None:
+      shared_dirves = []
+
+   volume_args = ' '
+   for (real_path, docker_path) in shared_drives:
+      volume_args += '-v %s:/%s' % (real_path,docker_path)
+
+   ports_args = '-p 4247:4247'
+   full_cmd = 'docker run -t -i %s %s %s %s' % (volume_args, ports_args, build_id, cmd)
+
+   run_bash(full_cmd, False)
+
+   #pass
+
 
 if __name__ == '__main__':
    main()
