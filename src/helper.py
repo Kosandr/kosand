@@ -13,7 +13,7 @@ KOSAND_NGINX_INCLUDE_PATH = '%sinternal/nginx-confs/' % (KOSAND_DATA_DIR, )
 KOSAND_INCLUDE_PATH_FOR_NGINX_CONF = KOSAND_NGINX_INCLUDE_PATH + '*'
 
 
-import configparser, argparse
+import configparser
 
 import utiltools
 from utiltools import shellutils
@@ -47,42 +47,6 @@ def get_conf_data(conf, get_conf_section_list, get_conf_section_field_list):
 
    return ret
 
-def gen_arg_parser():
-
-   init_help = '''main actions:
-      install           (global) install the global kosand project
-      init -p <project-name>
-                        new project
-      setup             (project) run after cloning to setup
-      rm [-p <project-name>]
-                        remove current project from the list
-      watch [-p <project-name>]
-                        watch project live
-      start [-p <project-name>]
-                        start running project
-      stop [-p <project-name>]
-                        stop running project
-      status [-p <project-name>]
-                        (local) print current status
-      status --global   (global) status of all projects
-   '''
-
-   p = parser = argparse.ArgumentParser(
-         'kosand', epilog=init_help,
-         formatter_class=argparse.RawTextHelpFormatter)
-
-   p_help_str = 'name of new project (use with init only)'
-   g_help_str = 'run command in global mode (used with status)'
-   m_help_str = 'server mode (used with install): devel/prod'
-
-   p.add_argument('-p', '--project-name', nargs='?', help=p_help_str)
-   p.add_argument('-g', '--global', help=g_help_str)
-   p.add_argument('-m', '--mode', nargs='?', help=m_help_str)
-
-   choices = ['install', 'init', 'setup', 'rm', 'watch', 'start', 'stop', 'status', 'set', 'get']
-   p.add_argument('action', nargs='?', choices=choices)
-
-   return parser
 
 
 def gen_new_conf(conf_path, gen_default_conf,

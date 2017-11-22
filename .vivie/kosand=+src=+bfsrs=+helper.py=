@@ -2,7 +2,7 @@ let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 argglobal
 setlocal keymap=
 setlocal noarabic
-setlocal noautoindent
+setlocal autoindent
 setlocal backupcopy=
 setlocal nobinary
 setlocal nobreakindent
@@ -98,7 +98,7 @@ endif
 setlocal tabstop=6
 setlocal tagcase=
 setlocal tags=
-setlocal textwidth=0
+setlocal textwidth=190
 setlocal thesaurus=
 setlocal noundofile
 setlocal undolevels=-123456
@@ -107,20 +107,21 @@ setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
 silent! normal! zE
-2,13fold
-21,29fold
-31,48fold
-52,82fold
-87,88fold
-90,92fold
-94,95fold
-2
+34,62fold
+64,76fold
+7,78fold
+7,78fold
+85,92fold
+95,103fold
+7
 normal! zo
-let s:l = 83 - ((74 * winheight(0) + 16) / 32)
+7
+normal! zo
+let s:l = 32 - ((29 * winheight(0) + 16) / 32)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-83
+32
 normal! 0
 let &so = s:so_save | let &siso = s:siso_save
 doautoall SessionLoadPost

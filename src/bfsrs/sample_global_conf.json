@@ -1,0 +1,19 @@
+{
+   'debug' : 1, //1 or 0
+
+   'system_paths' : {
+      'kosandr_repo' : '~/orgs/Kosandr/kosand/',
+      'install_dir' : '/sec/kosandr/', //maybe switch to kosandr_repo location?
+
+      ////relative to install_dir
+      //'ro_data' : 'sites'
+   }
+   'docker_paths' : {
+      'kosandr_repo' : '~/orgs/Kosandr/kosand/',
+      'site_dir' : '/sec/site/',
+      'apps_dir' : '/sec/apps/', //no version folder
+      'static_dir'  : '/sec/static/',
+      'data_dir_ro' : '/sec/data/ro/'
+      'data_dir_rw' : '/sec/data/rw/'
+   }
+}

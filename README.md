@@ -10,9 +10,9 @@ Tool for managing kosandr sites and apps.
 - TODO
    - instead of /sec/kosandr, do ~/orgs/Kosandr/kosand/ on host
    - /sec/ on VM
-   - maybe mount data is separate directory in sec
+   - DATA maybe mount data is separate directory in sec
       - host data for app and sites
-         - /sec/kosandr/sites/data/{ro,rw}/{site,apps/<app-name>}
+         - /sec/kosandr/sites/<site-name>/data/{ro,rw}/{site,apps/<app-name>}
             - rw
                - rw/apps/<app-name>/{db,misc}
                - rw/site/{db,misc}
@@ -26,8 +26,8 @@ Tool for managing kosandr sites and apps.
                - rw/apps/<app-name>/{db,misc}
                - rw/site/{db,misc}
             - ro
-               - ro/apps/<app-name>/{creds,nginx.conf}
-               - ro/site/{creds,nginx.conf}
+               - ro/apps/<app-name>/{app_conf.json,creds,misc/nginx.conf}
+               - ro/site/{site_conf.json,creds,misc/nginx.conf}
 
 - host to Docker mappings
    - host
@@ -37,31 +37,34 @@ Tool for managing kosandr sites and apps.
       - apps
          - /sec/kosandr/apps/<app-name>/<app-version>
 
-   - /sec/kosandr/sites/<site-name>/ ---> /sec/site/
-      - site_conf.json        ---> /sec/site/site_conf.json
-      - src                   ---> /sec/site/src (mounted ro)
-      - data                  ---> /sec/site/data
-         - data/db
-         - data/creds
-         - data/misc/{nginx.conf}
-      - static                ---> /sec/static/site/{images,autogen,js,css}
+   - sites
+      - /sec/kosandr/sites/<site-name>/   ---> /sec/site/
+         - site_conf.json                 ---> /sec/site/site_conf.json #old
+         - src                            ---> /sec/site/src (mounted ro)
+         - data                           ---> /sec/site/data
+            - data/db
+            - data/creds
+            - data/site_conf.json         ---> /sec/site/data/site_conf.json
+            - data/misc/{nginx.conf}
+         - static                         ---> /sec/static/site/{images,autogen,js,css}
 
-   - /sec/kosandr/apps/<app-name>/<app-version>/
-      - app_conf.json         ---> /sec/apps/<app-name>/<app_conf.json>
-      - static                ---> /sec/static/apps/<app-name>/static/
-         - images
-         - autogen/{images,js,css}
-         - js
-         - css
-      - src                   ---> /sec/apps/<app-name>/src
-         - templates
-         - jsx
-         - sass
-         - back
-            - app.py
-            - db.py
-            - view.py
-         -
+   - apps
+      - /sec/kosandr/apps/<app-name>/<app-version>/
+         - app_conf.json         ---> /sec/apps/<app-name>/<app_conf.json>
+         - static                ---> /sec/static/apps/<app-name>/static/
+            - autogen/{images,js,css}
+            - images
+            - js
+            - css
+         - src                   ---> /sec/apps/<app-name>/src
+            - templates
+            - jsx
+            - sass
+            - back
+               - app.py
+               - db.py
+               - view.py
+            -
 
    - docker VM
          - sites get mounted in /sec/site/src ro
